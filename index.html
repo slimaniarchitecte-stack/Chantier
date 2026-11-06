@@ -221,6 +221,8 @@ td.act{text-align:right;padding-right:0;width:1%}
 @media (min-width:620px){.ov{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .ov button{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-height:96px;padding:11px 12px;background:var(--ground);border:0;text-align:left;color:var(--ink)}
 .ov button:hover{background:var(--panel)}
+.ov button:last-child:nth-child(odd){grid-column:1/-1}
+@media (min-width:620px){.ov button:last-child:nth-child(3n+1){grid-column:1/-1}}
 .ov .v{font-family:var(--f-display);font-weight:700;font-size:var(--fs-2xl);line-height:1}
 .ov .v small,.big small{font-size:.5em;font-weight:500;color:var(--ink2);margin-left:2px}
 .ov .s{font-size:var(--fs-sm);color:var(--ink2);line-height:1.25}
@@ -610,6 +612,9 @@ const S = {
   pfeLate:{t:"PFE block, shortened",track:"pfe",mins:60,time:"20:45",
     d:"Class night. You are home around 20:30, so this block is an hour instead of ninety minutes. This is the real price of three evening classes a week, and it is the main thing muay thai costs you between now and the jury.",
     m:"25 minutes. Set a timer."},
+  read:{t:"Reading",track:"read",mins:30,time:"22:00",
+    d:"Your own choice of book, thirty minutes before lights out. It sits here deliberately: this is the slot that would otherwise go to the phone, which is on your do-not list. No prescribed list and no target. The only rule is that it is a book rather than a feed.",
+    m:"Ten pages."},
   ball1:{t:"Ball work",track:"football",mins:15,time:"17:45",
     d:"Touch only, no fitness element. 100 two-touch wall passes right foot, control then pass. 100 left. Juggle to the drop, three times. The goal is your feet remembering they exist.",
     m:"50 touches against a wall."},
@@ -648,18 +653,18 @@ const S = {
     m:"Just the football four: juggling, wall passes, shuttle, match minutes."}
 };
 const PLANS = {
-  p1:  {0:["plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["pfe"],4:["muaythai","pfeLate"],5:["ball1","pfe"],6:["pfeBig","muaythai"]},
-  p2a: {0:["plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["easyrun","pfe"],4:["muaythai","pfeLate"],5:["ball1","pfe"],6:["pfeBig","muaythai"]},
-  p2b: {0:["pfeBig","redraw","plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["pfe"],4:["muaythai","pfeLate"],5:["ball2","pfe"],6:["match","muaythai"]},
-  p3a: {0:["pfeBig","archBlock","plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["pfe"],4:["muaythai","pfeLate"],5:["ball2","pfe"],6:["match","muaythai"]},
+  p1:  {0:["plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["pfe"],4:["muaythai","pfeLate"],5:["pfe","read"],6:["pfeBig","muaythai"]},
+  p2a: {0:["plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["easyrun","pfe"],4:["muaythai","pfeLate"],5:["pfe","read"],6:["pfeBig","muaythai"]},
+  p2b: {0:["pfeBig","redraw","plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["pfe"],4:["muaythai","pfeLate"],5:["pfe","read"],6:["match","muaythai"]},
+  p3a: {0:["pfeBig","archBlock","plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["pfe"],4:["muaythai","pfeLate"],5:["pfe","read"],6:["match","muaythai"]},
   p3r: {0:["plan10"],1:["pfe"],2:["mtRam","pfe"],3:["pfe"],4:["pfe"],5:["pfe"],6:["mtRam","pfeBig"]},
-  p3b: {0:["pfeBig","archBlock","plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["ball2","pfe"],4:["pfe"],5:["pfe"],6:["match"]},
-  p3f: {0:["pfeBig","archBlock","plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["pfe"],4:["muaythai","pfeLate"],5:["ball2","pfe"],6:["match","muaythai"]},
-  p3t: {0:["pfeBig","plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["ball2","pfe"],4:["muaythai","pfeLate"],5:["pfe"],6:["match","muaythai"]}
+  p3b: {0:["pfeBig","archBlock","plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["pfe","read"],4:["pfe"],5:["pfe"],6:["match"]},
+  p3f: {0:["pfeBig","archBlock","plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["pfe"],4:["muaythai","pfeLate"],5:["pfe","read"],6:["match","muaythai"]},
+  p3t: {0:["pfeBig","plan10"],1:["prehab","pfe"],2:["muaythai","pfeLate"],3:["pfe","read"],4:["muaythai","pfeLate"],5:["pfe"],6:["match","muaythai"]}
 };
 const TEST_DAYS = ["2026-11-29","2026-12-27","2027-01-31","2027-03-28","2027-04-25"];
-const TRACK_LABEL = {mt:"Muay thai",strength:"Strength",football:"Football",cardio:"Cardio",pfe:"PFE",arch:"Arch",admin:"Admin",custom:"Mine"};
-const SHORT = {strengthA:"STR",strengthB:"STR",gymA:"GYM",gymB:"GYM",gymBlight:"GYM",gymHalf:"GYM",gym30:"GYM",gymRam:"GYM",muaythai:"MUAY",mtRam:"MUAY",prehab:"PREH",pfeLate:"PFE",
+const TRACK_LABEL = {mt:"Muay thai",strength:"Strength",football:"Football",read:"Reading",cardio:"Cardio",pfe:"PFE",arch:"Arch",admin:"Admin",custom:"Mine"};
+const SHORT = {strengthA:"STR",strengthB:"STR",gymA:"GYM",gymB:"GYM",gymBlight:"GYM",gymHalf:"GYM",gym30:"GYM",gymRam:"GYM",muaythai:"MUAY",mtRam:"MUAY",prehab:"PREH",pfeLate:"PFE",read:"READ",
   ball1:"BALL",ball2:"BALL",ballRam:"BALL",match:"MATCH",walkrun:"WALK",easyrun:"RUN",pfe:"PFE",pfeBig:"PFE",redraw:"DRAW",archBlock:"ARCH",plan10:"PLAN",testday:"TEST"};
 const MIN_MINS = {pfe:25, pfeLate:25, pfeBig:90};
 const METRICS = [
@@ -1048,7 +1053,7 @@ function viewWeek(){
   h += '<div class="legend"><span>' + gl("done", true) + "Done</span><span>" + gl("min", true) + "Minimum</span><span>" + gl("skipped", true) + "Skipped</span><span>" + gl("", true) + "Not logged</span><span>" + gl("plan", true) + "Planned</span></div>"
     + '<p class="cap">Block height is planned minutes, bottom to top through the day. Short sessions get a minimum height so their label fits. The flag marks the match. Numbers under each day: total minutes, then logged out of scheduled. Tap a day to open it.</p>';
 
-  const groups = [["Training", s => s.track === "strength" || s.track === "football" || s.track === "cardio"], ["PFE", s => s.track === "pfe"], ["Architecture", s => s.track === "arch"], ["Planning and yours", s => s.track === "admin" || s.track === "custom"]];
+  const groups = [["Training", s => s.track === "mt" || s.track === "strength" || s.track === "football" || s.track === "cardio"], ["PFE", s => s.track === "pfe"], ["Architecture and reading", s => s.track === "arch" || s.track === "read"], ["Planning and yours", s => s.track === "admin" || s.track === "custom"]];
   const rows = groups.map(g => {
     let mins = 0, n = 0, lg = 0;
     days.forEach(x => x.list.forEach(s => { if (!g[1](s)) return; mins += s.mins || 0; n++; const st = statusOf(x.d, s.key); if (st === "done" || st === "min") lg++; }));
@@ -1065,7 +1070,16 @@ function viewWeek(){
     + "<li><b>Hard days hard, easy days easy.</b> Wednesday and Sunday are real rest. Medium everything gives fatigue without adaptation.</li>"
     + "<li><b>Three evenings a week the PFE block drops to an hour.</b> Tuesday and Thursday are marked shortened. Over the weeks to April that is roughly 20 hours less thesis time, and it is what the classes cost you.</li>"
     + "<li><b>Monday's ten minutes is the only strength work left.</b> Nordic curl and Copenhagen plank. It is why you are still playing in April.</li>"
-    + "<li><b>If something gives in week three</b>, it is Monday's ten minutes, then a ball session. Not the PFE, and not the classes you paid for.</li></ul>";
+    + "<li><b>Football is matches only</b> since 6 Nov. Technique is used, not trained. Reading took the slot.</li>"
+    + "<li><b>If something gives in week three</b>, it is Monday's ten minutes, then the reading. Not the PFE, and not the classes you paid for.</li></ul>"
+    + '<div class="lbl" style="margin-top:22px">If you want football back</div>'
+    + '<p class="strong">The drills were removed, not deleted. One 20-minute session a week, in the slot reading now holds, gets touch and weak foot moving again:</p>'
+    + '<ol class="drills"><li>One-touch wall pass, 50 each foot, then 50 alternating.</li>'
+    + "<li>Receive across your body, 30 each side. The most transferable touch in football.</li>"
+    + "<li>Receive, turn 180°, pass. 20 each direction.</li>"
+    + "<li>Driven pass from 15–20 m, laces, 30 each foot.</li>"
+    + "<li>Juggling: 50 consecutive, then 20 weak foot only.</li></ol>"
+    + '<p class="strong">Weak foot takes 60% of every rep count, not half. You are correcting an asymmetry, so equal work preserves it.</p>';
 
   h += viewMap(today);
   return h;
@@ -1143,6 +1157,16 @@ const tile = (id, label, v, s) => '<button data-act="jump" data-t="' + id + '"><
 function renderObjectives(){
   const today = todayYmd();
   const str = trackStats(s => s.track === "mt" || s.track === "strength", 28), pf = trackStats(s => s.track === "pfe", 28), all = trackStats(() => true, 28);
+  const rd = trackStats(s => s.track === "read", 28);
+  const READ_DAY = (PLANS[(phaseFor(today) || {}).id] || {})[3] && ((PLANS[(phaseFor(today) || {}).id] || {})[3] || []).indexOf("read") >= 0 ? "Wednesdays" : "Fridays";
+  const matchCount = n => {
+    let c = 0;
+    for (let i = 0; i < n; i++){
+      const d = addDays(today, -i); if (d < START) break;
+      sessionsFor(d).forEach(s => { if (s.key === "match" || (s.own && s.track === "football")){ const st = statusOf(d, s.key); if (st === "done" || st === "min") c++; } });
+    }
+    return c;
+  };
   const g = gapRuns(), stk = streak();
   const jugL = lastOf(series("jugL"));
   const rev = countDone("revit", REVIT), red = countDone("redraw", REDRAW);
@@ -1151,7 +1175,8 @@ function renderObjectives(){
   const frac = st => st.tot ? st.hit + "<small>/" + st.tot + "</small>" : "—";
   let h = '<div class="ov">'
     + tile("trk-strength", "Muay thai", frac(str), "sessions, last 28 days")
-    + tile("trk-football", "Football", jugL == null ? "—" : f1(jugL), "left-foot juggles")
+    + tile("trk-football", "Football", String(matchCount(28)), "matches, last 28 days")
+    + tile("trk-read", "Reading", frac(rd), "sessions, last 28 days")
     + tile("trk-revit", "Revit", rev + "<small>/" + REVIT.length + "</small>", "capabilities ticked")
     + tile("trk-redraw", "Redraw", red + "<small>/" + REDRAW.length + "</small>", "buildings redrawn")
     + tile("trk-pfe", "PFE", String(wk), "weeks to the jury")
@@ -1167,7 +1192,11 @@ function renderObjectives(){
 
   /* football */
   const wf = series("wallL");
-  h += '<div class="vt" id="trk-football"><h2>Football</h2><div class="sc">Monthly tests · the weak foot is the headline</div></div>'
+  h += '<div class="vt" id="trk-football"><h2>Football</h2><div class="sc">Matches only · no solo drills in the plan</div></div>'
+    + '<div class="bigrow"><div class="big">' + matchCount(28) + '</div><p class="lead">matches logged in the last 28 days. This is now the whole football track.</p></div>'
+    + '<p class="strong">You took the solo drills out on 6 Nov, so <b>touch and weak foot are no longer being trained</b>, only used. Expect the numbers below to hold roughly steady from matches and drift down on the left foot. That is the honest trade, not a failure. Put one drill session back and they start moving again.</p>'
+    + '<div class="lbl" style="margin-top:20px">Match minutes per month</div>' + minutesBars()
+    + '<div class="lbl" style="margin-top:22px">Still measured on test days</div>'
     + '<div class="wfgrid">' + footRow("jugL", "jugR", "Left foot juggles") + footRow("wallL", "wallR", "Left wall passes, 60 s") + "</div>"
     + (wf.length || jugL != null ? "" : '<p class="strong">Nothing recorded yet. The first test is <b>Sun 29 Nov</b>. Record the left foot first, even when the number is embarrassing. That number is the point.</p>')
     + '<div class="cells" style="--n:3">'
@@ -1175,13 +1204,12 @@ function renderObjectives(){
     + secondaryCell("5-10-5 shuttle", series("shuttle"), v => (Math.round(v * 100) / 100).toFixed(2), "s", true, "Lower is better")
     + secondaryCell("Match minutes", series("minutes"), f1, "min", false, "Latest month")
     + "</div>"
-    + '<div class="lbl" style="margin-top:20px">Match minutes per month</div>' + minutesBars()
-    + '<div class="lbl" style="margin-top:22px">Solo drills</div><ol class="drills">'
-    + "<li>Two-touch wall pass, 100 right, 100 left.</li><li>One-touch wall pass, 50 each foot, then 50 alternating.</li>"
-    + "<li>Receive across your body, 30 each side. The most transferable touch in football.</li><li>Receive, turn 180°, pass. 20 each direction.</li>"
-    + "<li>Driven pass from 15–20 m, laces, 30 each foot.</li><li>Wall volleys, 20 each foot.</li><li>Juggling: 50 consecutive, then 20 weak foot only.</li>"
-    + "<li>Turns: Cruyff, drag-back, inside hook, outside hook. 10 each, each foot.</li></ol>"
-    + '<p class="strong"><b>Weak foot:</b> 60% of all reps, one session a week entirely weak foot for the first eight weeks, and use it in games even when it is the worse option.</p>';
+    + '<p class="cap">The drills are kept in the Do not tab under "If you want football back", so putting them back is a one-line change rather than a rebuild.</p>';
+
+  /* reading */
+  h += '<div class="vt" id="trk-read"><h2>Reading</h2><div class="sc">' + READ_DAY + ' · 30 minutes, 22:00</div></div>'
+    + '<div class="bigrow"><div class="big">' + frac(rd) + '</div><p class="lead">' + (rd.tot ? "reading sessions done or at minimum, out of those scheduled in the last 28 days." : "Nothing has come due yet. The first one is this " + READ_DAY + ".") + "</p></div>"
+    + '<p class="strong">Your choice of book, no list and no target. It sits at 22:00 because that is the slot the phone would otherwise take, and the phone in the bedroom is on your do-not list. Minimum version is ten pages, which is the version that survives a bad week.</p>';
 
   /* revit */
   h += '<div class="vt" id="trk-revit"><h2>Architecture · technical</h2><div class="sc">Revit · target: Autodesk Certified Professional before France</div></div>'
